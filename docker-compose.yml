@@ -1,27 +1,10 @@
-version: '3.7'
+version: '3'
+ 
 services:
-    database:
-        image: 'mysql:5'
-        environment:
-            MYSQL_ROOT_PASSWORD: password
-            MYSQL_DATABASE: glevents
-        ports:
-            - '3306:3306'
-        volumes:
-          - ./data:/var/lib/mysql
-
-    phpmyadmin:
-      depends_on:
-          - database
-      image: phpmyadmin
-      restart: always
-      ports:
-          - 8080:80
-      environment:
-          PMA_HOST: database
-        
     mailer:
       image: schickling/mailcatcher
-      ports:
-        - "1025:25"
-        - "1080:1080"
+      ports: [1025, 1080]
+
+    rabbitmq:
+      image: rabbitmq:3.7-management
+      ports: [5672, 15672]
