@@ -13,12 +13,15 @@ use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use App\Services\NewsletterExport;
 
+/**
+ * Controller used to manage Newsletters
+ */
 class NewsletterController extends AbstractController
 {
     /**
      * These routes are used to create a new Newsletter
      * 
-     * @Route("/",           name="home", methods={"GET", "POST"})
+     * @Route("/", name="home", methods={"GET", "POST"})
      * @Route("/newsletter", name="newsletter", methods={"GET", "POST"})
      */
     public function index(Request $request, NewsletterRepository $newsLetterRepository, MailerInterface $mailer): Response
@@ -33,7 +36,7 @@ class NewsletterController extends AbstractController
             //TODO : Send the mail asynchronously with messenger/rabbitmq 
             $email = (new Email())
                 ->from("contact@bechir.info")
-                ->to($newsLetter->getEmail())
+                ->to("bechir@gmail.com")
                 ->subject('Merci, vous êtes inscrit')
                 ->text('Merci, vous êtes inscrit');
             $mailer->send($email);
@@ -41,8 +44,9 @@ class NewsletterController extends AbstractController
             return $this->redirectToRoute('home', [], Response::HTTP_SEE_OTHER);
         }
         return $this->renderForm(
-            'newsletter/new.html.twig', [
-            'form' => $form,
+            'newsletter/new.html.twig',
+            [
+                'form' => $form,
             ]
         );
     }
@@ -55,8 +59,9 @@ class NewsletterController extends AbstractController
     public function admin_index(NewsletterRepository $newsletterRepository): Response
     {
         return $this->render(
-            'newsletter/index.html.twig', [
-            'newsletters' => $newsletterRepository->findByGmailEmail(),
+            'newsletter/index.html.twig',
+            [
+                'newsletters' => $newsletterRepository->findByGmailEmail(),
             ]
         );
     }
