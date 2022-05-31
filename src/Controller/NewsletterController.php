@@ -11,6 +11,7 @@ use App\Repository\NewsletterRepository;
 use App\Form\NewsletterType;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
+use App\Services\NewsletterExport;
 
 class NewsletterController extends AbstractController
 {
@@ -54,5 +55,25 @@ class NewsletterController extends AbstractController
         return $this->render('newsletter/index.html.twig', [
             'newsletters' => $newsletterRepository->findByGmailEmail(),
         ]);
+    }
+
+    /**
+     * Route for exporting the list of registrants to a CSV file
+     * 
+     * @Route("/admin/newsletter/export", name="newsletter_export", methods={"GET"})
+     */
+    public function export(NewsletterExport $newsletterExport): Response
+    {
+        //We retrieve the list of registrants in csv format
+        $newsletters_as_csv = $newsletterExport->getNewslettersAsCSV();
+        //We generate the CSV file
+        return new Response(
+            $newsletters_as_csv,
+            200,
+            [
+                'Content-Type' => 'application/vnd.ms-excel',
+                "Content-disposition" => "attachment; filename=Export.csv"
+            ]
+        );
     }
 }
