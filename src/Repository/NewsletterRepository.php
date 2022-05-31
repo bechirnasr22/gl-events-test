@@ -21,6 +21,20 @@ class NewsletterRepository extends ServiceEntityRepository
         parent::__construct($registry, Newsletter::class);
     }
 
+    /**
+     * @return NewsLetter[] Returns an array of NewsLetter objects that have a Gmail email 
+     */
+    public function findByGmailEmail(): array
+    {
+        return $this->createQueryBuilder('n')
+            ->where('n.email LIKE :email')
+            ->setParameter('email', '%@gmail.com')
+            ->orderBy('n.id', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+
     public function add(Newsletter $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
@@ -39,28 +53,28 @@ class NewsletterRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return Newsletter[] Returns an array of Newsletter objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('n')
-//            ->andWhere('n.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('n.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    //    /**
+    //     * @return Newsletter[] Returns an array of Newsletter objects
+    //     */
+    //    public function findByExampleField($value): array
+    //    {
+    //        return $this->createQueryBuilder('n')
+    //            ->andWhere('n.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->orderBy('n.id', 'ASC')
+    //            ->setMaxResults(10)
+    //            ->getQuery()
+    //            ->getResult()
+    //        ;
+    //    }
 
-//    public function findOneBySomeField($value): ?Newsletter
-//    {
-//        return $this->createQueryBuilder('n')
-//            ->andWhere('n.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    //    public function findOneBySomeField($value): ?Newsletter
+    //    {
+    //        return $this->createQueryBuilder('n')
+    //            ->andWhere('n.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
 }
