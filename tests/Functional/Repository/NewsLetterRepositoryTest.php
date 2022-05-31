@@ -11,7 +11,6 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
  * Functional test NewsLetterRepositoryTest
  */
 class NewsLetterRepositoryTest extends KernelTestCase
-
 {
     private $entityManager;
 

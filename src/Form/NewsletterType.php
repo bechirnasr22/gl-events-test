@@ -13,18 +13,22 @@ class NewsletterType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('email', EmailType::class, array(
+            ->add(
+                'email', EmailType::class, array(
                 'label' => false,
                 'attr' => array(
                     'placeholder' => 'Ex : bechir@gmail.com'
                 )
-            ));
+                )
+            );
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults([
+        $resolver->setDefaults(
+            [
             'data_class' => Newsletter::class,
-        ]);
+            ]
+        );
     }
 }

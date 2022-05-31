@@ -46,9 +46,11 @@ class SecurityController extends AbstractController
             return $this->redirectToRoute('newsletter_index');
         }
 
-        return $this->render('secuirity/register.html.twig', [
+        return $this->render(
+            'secuirity/register.html.twig', [
             'registrationForm' => $form->createView(),
-        ]);
+            ]
+        );
     }
 
     /**
@@ -63,10 +65,12 @@ class SecurityController extends AbstractController
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
 
-        return $this->render('secuirity/login.html.twig', [
+        return $this->render(
+            'secuirity/login.html.twig', [
             'last_username' => $lastUsername,
             'error'         => $error,
-        ]);
+            ]
+        );
     }
 
     /**

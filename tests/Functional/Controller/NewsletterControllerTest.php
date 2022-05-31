@@ -41,9 +41,11 @@ class NewsletterControllerTest extends WebTestCase
         $originalNumObjectsInnewsletterRepository = count($this->newsletterRepository->findAll());
         $this->client->request('GET', "/newsletter");
         self::assertResponseStatusCodeSame(200);
-        $this->client->submitForm("S'abonner", [
+        $this->client->submitForm(
+            "S'abonner", [
             'newsletter[email]' => AppFixtures::DEFAULT_NEWSLETTER_EMAILS[0],
-        ]);
+            ]
+        );
         self::assertResponseRedirects('/');
         self::assertSame($originalNumObjectsInnewsletterRepository + 1, count($this->newsletterRepository->findAll()));
     }

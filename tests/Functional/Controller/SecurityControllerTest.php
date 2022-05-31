@@ -41,10 +41,12 @@ class SecurityControllerTest extends WebTestCase
         $this->client->followRedirects();
 
         self::assertResponseStatusCodeSame(200);
-        $this->client->submitForm("S'inscrire", [
+        $this->client->submitForm(
+            "S'inscrire", [
             'registration_form[email]' => "new_" . AppFixtures::DEFAULT_USER['email'],
             'registration_form[plainPassword]' => AppFixtures::DEFAULT_USER['password'],
-        ]);
+            ]
+        );
         $this->assertResponseIsSuccessful();
         self::assertSame($originalNumObjectsInUserRepository + 1, count($this->userRepository->findAll()));
     }
@@ -62,10 +64,12 @@ class SecurityControllerTest extends WebTestCase
     {
         $crawler = $this->client->request('GET', '/login');
         $buttonCrawlerNode = $crawler->selectButton('Login');
-        $form = $buttonCrawlerNode->form([
+        $form = $buttonCrawlerNode->form(
+            [
             '_username'    => AppFixtures::DEFAULT_USER['email'],
             '_password'    => 'fakepassword',
-        ]);
+            ]
+        );
         $this->client->submit($form);
         //TODO : Remove the static link 
         $this->assertResponseRedirects('http://localhost/login');
@@ -78,10 +82,12 @@ class SecurityControllerTest extends WebTestCase
         $this->client->followRedirects();
 
         $buttonCrawlerNode = $crawler->selectButton('Login');
-        $form = $buttonCrawlerNode->form([
+        $form = $buttonCrawlerNode->form(
+            [
             '_username'    => AppFixtures::DEFAULT_USER['email'],
             '_password'    => AppFixtures::DEFAULT_USER['password'],
-        ]);
+            ]
+        );
         $this->client->submit($form);
         $this->client->request('GET', '/admin/newsletter');
         $this->assertResponseIsSuccessful();

@@ -27,7 +27,7 @@ class AppFixtures extends Fixture
     /**
      * Create 1 User
      *
-     * @param ObjectManager $manager
+     * @param  ObjectManager $manager
      * @return void
      */
     private function loadUser(ObjectManager $manager): void
@@ -42,7 +42,7 @@ class AppFixtures extends Fixture
     /**
      * Create 2 Newsletter
      *
-     * @param ObjectManager $manager
+     * @param  ObjectManager $manager
      * @return void
      */
     private function loadNewsletters(ObjectManager $manager): void

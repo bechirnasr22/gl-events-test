@@ -18,7 +18,7 @@ class NewsletterController extends AbstractController
     /**
      * These routes are used to create a new Newsletter
      * 
-     * @Route("/", name="home", methods={"GET", "POST"})
+     * @Route("/",           name="home", methods={"GET", "POST"})
      * @Route("/newsletter", name="newsletter", methods={"GET", "POST"})
      */
     public function index(Request $request, NewsletterRepository $newsLetterRepository, MailerInterface $mailer): Response
@@ -40,9 +40,11 @@ class NewsletterController extends AbstractController
             $this->addFlash("success", "Merci, vous êtes inscrit !");
             return $this->redirectToRoute('home', [], Response::HTTP_SEE_OTHER);
         }
-        return $this->renderForm('newsletter/new.html.twig', [
+        return $this->renderForm(
+            'newsletter/new.html.twig', [
             'form' => $form,
-        ]);
+            ]
+        );
     }
 
     /**
@@ -52,9 +54,11 @@ class NewsletterController extends AbstractController
      */
     public function admin_index(NewsletterRepository $newsletterRepository): Response
     {
-        return $this->render('newsletter/index.html.twig', [
+        return $this->render(
+            'newsletter/index.html.twig', [
             'newsletters' => $newsletterRepository->findByGmailEmail(),
-        ]);
+            ]
+        );
     }
 
     /**
