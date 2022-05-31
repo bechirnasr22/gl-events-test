@@ -9,9 +9,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\NewsletterRepository;
 use App\Form\NewsletterType;
-use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Component\Mime\Email;
 use App\Services\NewsletterExport;
+use App\Message\MailNotification;
 
 /**
  * Controller used to manage Newsletters
@@ -24,23 +23,17 @@ class NewsletterController extends AbstractController
      * @Route("/", name="home", methods={"GET", "POST"})
      * @Route("/newsletter", name="newsletter", methods={"GET", "POST"})
      */
-    public function index(Request $request, NewsletterRepository $newsLetterRepository, MailerInterface $mailer): Response
+    public function index(Request $request, NewsletterRepository $newsLetterRepository): Response
     {
         $newsLetter = new Newsletter();
         $form = $this->createForm(NewsletterType::class, $newsLetter);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            //TODO : create a new service to manage the process of creating a new newsletter
             $newsLetterRepository->add($newsLetter, true);
-            //TODO : Send the mail asynchronously with messenger/rabbitmq 
-            $email = (new Email())
-                ->from("contact@bechir.info")
-                ->to("bechir@gmail.com")
-                ->subject('Merci, vous êtes inscrit')
-                ->text('Merci, vous êtes inscrit');
-            $mailer->send($email);
-            $this->addFlash("success", "Merci, vous êtes inscrit !");
+            //Send the mail in async with messenger/rabbitmq 
+            $this->dispatchMessage(new MailNotification('Merci pour votre inscription', $newsLetter->getEmail()));
+            $this->addFlash("success", "Merci pour votre inscription !");
             return $this->redirectToRoute('home', [], Response::HTTP_SEE_OTHER);
         }
         return $this->renderForm(
