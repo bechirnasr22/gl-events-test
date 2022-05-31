@@ -12,6 +12,7 @@ use App\Entity\User;
 
 /**
  * Functional test SecurityController
+ * TODO : Comment methodes
  */
 class SecurityControllerTest extends WebTestCase
 {
@@ -21,13 +22,14 @@ class SecurityControllerTest extends WebTestCase
     protected function setUp(): void
     {
         $this->client = static::createClient();
-        $this->client->followRedirects();
         $this->userRepository = (static::getContainer()->get('doctrine'))->getRepository(User::class);
     }
 
     public function testRegister()
     {
         $this->client->request('GET', '/register');
+        $this->client->followRedirects();
+
         $this->assertResponseIsSuccessful();
         $this->assertSelectorTextContains('h1', "S'inscrire");
     }
@@ -36,6 +38,8 @@ class SecurityControllerTest extends WebTestCase
     {
         $originalNumObjectsInUserRepository = count($this->userRepository->findAll());
         $this->client->request('GET', "/register");
+        $this->client->followRedirects();
+
         self::assertResponseStatusCodeSame(200);
         $this->client->submitForm("S'inscrire", [
             'registration_form[email]' => "new_" . AppFixtures::DEFAULT_USER['email'],
@@ -48,13 +52,31 @@ class SecurityControllerTest extends WebTestCase
     public function testLogin()
     {
         $this->client->request('GET', '/login');
+        $this->client->followRedirects();
+
         $this->assertResponseIsSuccessful();
         $this->assertSelectorTextContains('h1', 'Connexion');
+    }
+
+    public function testLoginWithBadCredentials()
+    {
+        $crawler = $this->client->request('GET', '/login');
+        $buttonCrawlerNode = $crawler->selectButton('Login');
+        $form = $buttonCrawlerNode->form([
+            '_username'    => AppFixtures::DEFAULT_USER['email'],
+            '_password'    => 'fakepassword',
+        ]);
+        $this->client->submit($form);
+        //TODO : Remove the static link 
+        $this->assertResponseRedirects('http://localhost/login');
+        $this->client->followRedirects();
     }
 
     public function testSuccessfullLogin()
     {
         $crawler = $this->client->request('GET', '/login');
+        $this->client->followRedirects();
+
         $buttonCrawlerNode = $crawler->selectButton('Login');
         $form = $buttonCrawlerNode->form([
             '_username'    => AppFixtures::DEFAULT_USER['email'],
