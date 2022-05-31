@@ -22,7 +22,7 @@ class NewsletterRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return NewsLetter[] Returns an array of NewsLetter objects that have a Gmail email 
+     * @return Newsletter[] Returns an array of Newsletter objects that have a Gmail email 
      */
     public function findByGmailEmail(): array
     {
