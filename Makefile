@@ -30,7 +30,7 @@ tests: reset-test
 
 reset-test: export APP_ENV=test
 reset-test:
-	symfony console d:d:d --force
+	symfony console d:d:d --if-exists --force
 	symfony console d:d:c
 	symfony console d:m:m --no-interaction
 	symfony console d:f:l --no-interaction
