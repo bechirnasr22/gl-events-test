@@ -43,4 +43,16 @@ class NewsletterController extends AbstractController
             'form' => $form,
         ]);
     }
+
+    /**
+     * Route to display the list of registrants
+     * 
+     * @Route("/admin/newsletter", name="newsletter_index", methods={"GET"})
+     */
+    public function admin_index(NewsletterRepository $newsletterRepository): Response
+    {
+        return $this->render('newsletter/index.html.twig', [
+            'newsletters' => $newsletterRepository->findByGmailEmail(),
+        ]);
+    }
 }

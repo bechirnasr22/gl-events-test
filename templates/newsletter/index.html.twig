@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des inscrits
+{% endblock %}
+
+{% block body %}
+	<h1>Liste des inscrits</h1>
+	<table class="table table-dark table-striped">
+		<thead>
+			<tr>
+				<th>Id</th>
+				<th>Email</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for newsletter in newsletters %}
+				<tr>
+					<td>{{ newsletter.id }}</td>
+					<td>{{ newsletter.email }}</td>
+				</tr>
+			{% else %}
+				<tr>
+					<td colspan="3">no records found</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+{% endblock %}
