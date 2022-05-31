@@ -5,7 +5,7 @@ install:
 	composer install
 	symfony console d:d:c
 	symfony console d:m:m --no-interaction
-	symfony serve -d
+	symfony console d:f:l --no-interaction
 .PHONY: install
 
 start: export APP_ENV=dev
