@@ -2,6 +2,7 @@ SHELL := /bin/bash
 
 install: export APP_ENV=dev
 install:
+	docker-compose up -d
 	composer install
 	symfony console d:d:c
 	symfony console d:m:m --no-interaction
@@ -25,14 +26,16 @@ stop:
 
 tests: export APP_ENV=test
 tests: reset-test
-	bin/phpunit
+	symfony php bin/phpunit
 .PHONY: tests
 
 reset-test: export APP_ENV=test
 reset-test:
-	symfony console d:d:d --if-exists --force
-	symfony console d:d:c
-	symfony console d:m:m --no-interaction
-	symfony console d:f:l --no-interaction
+	symfony console doctrine:database:drop --if-exists --force
+	symfony console doctrine:database:create
+	symfony console doctrine:migration:migrate --no-interaction
+	symfony console doctrine:fixtures:load --no-interaction
 .PHONY: reset-test
+
+
 
