@@ -1,6 +1,14 @@
 GL events Test
 ========================
 
+Requirements
+------------
+
+  * PHP 7.4 or higher
+  * Composer
+  * Docker
+  * Make
+  * Symfony CLI
 
 Installation
 ------------
