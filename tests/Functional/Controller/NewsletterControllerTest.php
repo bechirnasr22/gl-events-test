@@ -42,8 +42,9 @@ class NewsletterControllerTest extends WebTestCase
         $this->client->request('GET', "/newsletter");
         self::assertResponseStatusCodeSame(200);
         $this->client->submitForm(
-            "S'abonner", [
-            'newsletter[email]' => AppFixtures::DEFAULT_NEWSLETTER_EMAILS[0],
+            "S'abonner",
+            [
+                'newsletter[email]' => AppFixtures::DEFAULT_NEWSLETTER_EMAILS[0],
             ]
         );
         self::assertResponseRedirects('/');
@@ -83,7 +84,7 @@ class NewsletterControllerTest extends WebTestCase
 
     /**
      * Test page /admin/newsletter/export without login
-     * The URL /admin/newsletter shouldn't be
+     * The URL /admin/newsletter/export shouldn't be
      * publicly accessible. This tests ensures that whenever a user tries to
      * access to this page, a redirection to the login form is performed.
      */
@@ -96,7 +97,7 @@ class NewsletterControllerTest extends WebTestCase
     }
 
     /**
-     * Test page /admin/newsletter/newsletter with login
+     * Test page /admin/newsletter/export with login
      */
     public function testExportWithLogin()
     {
